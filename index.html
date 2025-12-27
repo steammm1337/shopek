@@ -6,26 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --pink:#ff0080;
-  --blue:#00eaff;
-}
+:root{--pink:#ff0080;--blue:#00eaff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 
-* {
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-
-body {
+body{
   background:black;
   color:white;
   overflow-x:hidden;
 }
 
 /* ❄️ СНЕГ */
-canvas {
+canvas{
   position:fixed;
   inset:0;
   z-index:0;
@@ -33,14 +24,13 @@ canvas {
 }
 
 /* HEADER */
-header {
+header{
   position:relative;
   z-index:1;
   text-align:center;
   padding:40px 20px;
 }
-
-.logo {
+.logo{
   font-size:3rem;
   background:linear-gradient(90deg,var(--pink),var(--blue));
   -webkit-background-clip:text;
@@ -48,13 +38,8 @@ header {
   text-shadow:0 0 35px var(--pink);
 }
 
-header p {
-  margin-top:10px;
-  opacity:.9;
-}
-
 /* SHOP */
-.shop {
+.shop{
   position:relative;
   z-index:1;
   display:grid;
@@ -64,118 +49,83 @@ header p {
 }
 
 /* CARD */
-.card {
-  background:linear-gradient(135deg,#111,#222);
+.card{
+  background:#111;
   border-radius:24px;
   overflow:hidden;
   transition:.3s;
 }
-
-.card:hover {
+.card:hover{
   transform:translateY(-10px);
-  box-shadow:0 0 40px var(--blue);
+  box-shadow:0 0 35px var(--blue);
 }
 
-/* IMAGE */
-.image-box {
-  aspect-ratio:4/3;
-  overflow:hidden;
-}
-
-.image-box img {
+.image-box{aspect-ratio:4/3}
+.image-box img{
   width:100%;
   height:100%;
   object-fit:cover;
-  transition:.4s;
 }
 
-.card:hover img {
-  transform:scale(1.08);
-}
+.content{text-align:center;padding:20px}
+.price{color:var(--pink);font-size:20px;margin:10px 0}
 
-/* CONTENT */
-.content {
-  padding:20px;
-  text-align:center;
-}
-
-.content h3 {
-  color:var(--blue);
-  margin-bottom:8px;
-}
-
-.desc {
-  opacity:.8;
-  margin-bottom:10px;
-}
-
-.price {
-  color:var(--pink);
-  font-size:20px;
-  margin-bottom:16px;
-}
-
-/* 🌈 RADUGA BUTTON — ВСЕГДА */
-.btn {
+/* 🌈 КНОПКА С РАДУЖНОЙ ОБВОДКОЙ */
+.btn{
   position:relative;
   padding:14px 36px;
-  border-radius:50px;
   background:#111;
   color:white;
   border:none;
+  border-radius:50px;
   cursor:pointer;
   z-index:1;
 }
 
-.btn::before {
+.btn::before{
   content:"";
   position:absolute;
   inset:-3px;
   border-radius:50px;
-  background-size:300% 300%;
-  background-image:linear-gradient(
+  background:linear-gradient(
     90deg,
-    #ff004c,
-    #ffa600,
-    #ffee00,
-    #00ff9d,
-    #00c3ff,
-    #8f00ff,
-    #ff004c
+    #ff004c,#ffa600,#ffee00,#00ff9d,#00c3ff,#8f00ff,#ff004c
   );
+  background-size:300% 300%;
   animation:borderMove 3s linear infinite;
   z-index:-1;
 }
 
-@keyframes borderMove {
-  to {background-position:300%}
+.btn::after{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:50px;
+  background:#111;
+  z-index:-1;
 }
 
-/* 📱 MOBILE — СВАЙП */
-@media (max-width:768px) {
-  .shop {
+@keyframes borderMove{
+  to{background-position:300%}
+}
+
+/* 📱 MOBILE SWIPE */
+@media (max-width:768px){
+  .shop{
     display:flex;
     overflow-x:auto;
     scroll-snap-type:x mandatory;
     gap:20px;
     padding:20px;
   }
-
-  .shop::-webkit-scrollbar {
-    display:none;
-  }
-
-  .card {
-    min-width:90%;
-    scroll-snap-align:center;
-  }
+  .shop::-webkit-scrollbar{display:none}
+  .card{min-width:90%;scroll-snap-align:center}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ❄️ СНЕГ -->
 <canvas id="snow"></canvas>
 
 <header>
@@ -186,20 +136,20 @@ header p {
 <section class="shop" id="shop"></section>
 
 <script>
-/* ТОВАРЫ */
-const shop = document.getElementById("shop");
+const shop=document.getElementById("shop");
 
 for(let i=1;i<=10;i++){
-  shop.innerHTML += `
+  shop.innerHTML+=`
   <div class="card">
     <div class="image-box">
       <img src="https://picsum.photos/500/350?random=${i}">
     </div>
     <div class="content">
       <h3>Товар ${i}</h3>
-      <p class="desc">Описание товара ${i}</p>
-      <div class="price">${700 + i*40} ₴</div>
-      <button class="btn" onclick="location.href='contact.html'">Купить</button>
+      <div class="price">${700+i*40} ₴</div>
+      <button class="btn" onclick="location.href='product.html?id=${i}'">
+        Просмотреть
+      </button>
     </div>
   </div>`;
 }
