@@ -43,6 +43,7 @@ img{
   margin:20px 0;
 }
 
+/* 🌈 ОБВОДКА */
 .btn{
   position:relative;
   padding:14px 40px;
@@ -73,10 +74,14 @@ img{
   background:#111;
   z-index:-1;
 }
-
 @keyframes borderMove{to{background-position:300%}}
 
-.back{margin-bottom:20px;cursor:pointer;opacity:.7}
+.back{
+  margin-bottom:20px;
+  display:inline-block;
+  cursor:pointer;
+  opacity:.7;
+}
 .back:hover{opacity:1}
 </style>
 </head>
@@ -86,20 +91,51 @@ img{
 <canvas id="snow"></canvas>
 
 <div class="container">
-  <div class="back" onclick="location.href='index.html'">← Назад</div>
+  <div class="back" onclick="location.href='index.html'">← Вернуться в магазин</div>
+
   <img id="img">
   <h2 id="title"></h2>
   <p id="desc"></p>
   <div class="price" id="price"></div>
+
   <button class="btn" onclick="location.href='contact.html'">Купить</button>
 </div>
 
 <script>
 const id=new URLSearchParams(location.search).get("id")||1;
-img.src=`https://picsum.photos/900/500?random=${id}`;
-title.innerText=`Товар ${id}`;
-desc.innerText=`Полное описание товара ${id}. Характеристики и детали.`;
-price.innerText=`${700+id*40} ₴`;
+
+document.getElementById("img").src=`https://picsum.photos/900/500?random=${id}`;
+document.getElementById("title").innerText=`Товар ${id}`;
+document.getElementById("desc").innerText=`Полное описание товара ${id}.`;
+document.getElementById("price").innerText=`${700+id*40} ₴`;
+
+/* ❄️ СНЕГ */
+const c=document.getElementById("snow"),x=c.getContext("2d");
+function r(){c.width=innerWidth;c.height=innerHeight}
+r();addEventListener("resize",r);
+
+const s=[...Array(120)].map(()=>({
+  x:Math.random()*c.width,
+  y:Math.random()*c.height,
+  r:Math.random()*3+1,
+  v:Math.random()*.4+.2
+}));
+
+(function a(){
+  x.clearRect(0,0,c.width,c.height);
+  x.fillStyle="white";
+  s.forEach(f=>{
+    x.beginPath();
+    x.arc(f.x,f.y,f.r,0,Math.PI*2);
+    x.fill();
+    f.y+=f.v;
+    if(f.y>c.height){
+      f.y=-5;
+      f.x=Math.random()*c.width;
+    }
+  });
+  requestAnimationFrame(a);
+})();
 </script>
 
 </body>
