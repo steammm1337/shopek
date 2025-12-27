@@ -1,252 +1,230 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Hop Shop ❄</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Hop Shop ❄</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    :root {
-      --pink: #ff0080;
-      --blue: #00eaff;
-      --purple: #9b00ff;
-    }
+<style>
+/* === CSS — ВНЕШНИЙ ВИД САЙТА === */
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+:root {
+  --pink:#ff0080;
+  --blue:#00eaff;
+}
 
-    body {
-      background: black;
-      color: white;
-      overflow-x: hidden;
-    }
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
 
-    /* ===== Snow ===== */
-    canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
+body {
+  background:black;
+  color:white;
+  overflow-x:hidden;
+}
 
-    /* ===== Header ===== */
-    header {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 40px 20px;
-      animation: xmasGlow 4s infinite alternate;
-      transition: transform 0.1s linear;
-    }
+/* СНЕГ */
+canvas {
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
 
-    header h1 {
-      font-size: 3rem;
-      background: linear-gradient(90deg, var(--pink), var(--blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+/* ЗАГОЛОВОК */
+header {
+  text-align:center;
+  padding:30px 15px;
+  position:relative;
+  z-index:1;
+}
 
-    @keyframes xmasGlow {
-      0%   { text-shadow: 0 0 15px var(--pink); }
-      100% { text-shadow: 0 0 40px var(--blue); }
-    }
+header h1 {
+  font-size:2.5rem;
+  background:linear-gradient(90deg,var(--pink),var(--blue));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 30px var(--pink);
+}
 
-    /* ===== Shop ===== */
-    .shop {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 40px;
-      padding: 50px;
-    }
+/* МАГАЗИН */
+.shop {
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+  padding:20px;
+}
 
-    .card {
-      background: linear-gradient(135deg, #111, #222);
-      border-radius: 20px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.2s ease-out, box-shadow 0.4s;
-      animation: xmasGlow 5s infinite alternate;
-      overflow: visible;
-    }
+/* КАРТОЧКА */
+.card {
+  background:linear-gradient(135deg,#111,#222);
+  border-radius:20px;
+  overflow:hidden;
+  transition:.3s;
+}
 
-    .card:hover {
-      box-shadow:
-        0 0 25px var(--pink),
-        0 0 60px var(--blue);
-    }
+.card:hover {
+  transform:translateY(-10px);
+  box-shadow:0 0 40px var(--blue);
+}
 
-    .img-wrap {
-      overflow: visible;
-    }
+/* ФОТО */
+.image-box {
+  width:100%;
+  aspect-ratio:4/3;
+  overflow:hidden;
+}
 
-    .card img {
-      width: 100%;
-      border-radius: 15px;
-      transition: transform 0.5s;
-    }
+.image-box img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.4s;
+}
 
-    .card:hover img {
-      transform: scale(1.3);
-    }
+.card:hover img {
+  transform:scale(1.1);
+}
 
-    .card h3 {
-      margin: 15px 0 10px;
-      color: var(--blue);
-    }
+/* ТЕКСТ */
+.content {
+  padding:15px;
+  text-align:center;
+}
 
-    .price {
-      font-size: 1.3rem;
-      color: var(--pink);
-      margin-bottom: 15px;
-    }
+.content h3 {
+  color:var(--blue);
+  margin-bottom:6px;
+}
 
-    /* ===== Rainbow Button ===== */
-    .btn {
-      position: relative;
-      display: inline-block;
-      padding: 14px 30px;
-      border-radius: 40px;
-      color: white;
-      text-decoration: none;
-      background: #111;
-      z-index: 1;
-      overflow: hidden;
-    }
+.desc {
+  font-size:14px;
+  opacity:.8;
+  margin-bottom:8px;
+}
 
-    .btn::before {
-      content: "";
-      position: absolute;
-      inset: -4px;
-      background: linear-gradient(
-        90deg,
-        red, orange, yellow, lime, cyan, blue, violet, red
-      );
-      z-index: -1;
-      filter: blur(12px);
-      opacity: 0;
-      transition: opacity 0.4s;
-      animation: rainbow 3s linear infinite;
-    }
+.price {
+  color:var(--pink);
+  font-size:18px;
+  margin-bottom:10px;
+}
 
-    .btn:hover::before {
-      opacity: 1;
-    }
+/* КНОПКА */
+.btn {
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:40px;
+  background:#111;
+  color:white;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+}
 
-    @keyframes rainbow {
-      from { background-position: 0%; }
-      to   { background-position: 200%; }
-    }
+.btn::before {
+  content:"";
+  position:absolute;
+  inset:-4px;
+  background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
+  filter:blur(12px);
+  opacity:0;
+  transition:.4s;
+}
 
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 30px;
-      opacity: 0.6;
-    }
-  </style>
+.btn:hover::before {
+  opacity:1;
+}
+
+/* МОБИЛЬНЫЙ СКРОЛЛ */
+@media (max-width:768px) {
+  .shop {
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+  }
+
+  .shop::-webkit-scrollbar {
+    display:none;
+  }
+
+  .card {
+    min-width:90%;
+    scroll-snap-align:center;
+  }
+}
+</style>
 </head>
+
 <body>
 
 <canvas id="snow"></canvas>
 
-<header id="header">
+<header>
   <h1>❄ Hop Shop ❄</h1>
-  <p>Новогодний неоновый магазин</p>
+  <p>Листай товары</p>
 </header>
 
 <section class="shop">
+
   <div class="card">
-    <div class="img-wrap">
-      <img src="https://picsum.photos/400/300?1">
+    <div class="image-box">
+      <img src="images/product1.jpg">
     </div>
-    <h3>Товар 1</h3>
-    <div class="price">999 ₴</div>
-    <a href="#" class="btn">Купить</a>
+    <div class="content">
+      <h3>Товар 1</h3>
+      <p class="desc">Описание товара</p>
+      <div class="price">999 ₴</div>
+      <a class="btn" href="#">Купить</a>
+    </div>
   </div>
 
   <div class="card">
-    <div class="img-wrap">
-      <img src="https://picsum.photos/400/300?2">
+    <div class="image-box">
+      <img src="images/product2.jpg">
     </div>
-    <h3>Товар 2</h3>
-    <div class="price">1499 ₴</div>
-    <a href="#" class="btn">Купить</a>
+    <div class="content">
+      <h3>Товар 2</h3>
+      <p class="desc">Ещё описание</p>
+      <div class="price">1499 ₴</div>
+      <a class="btn" href="#">Купить</a>
+    </div>
   </div>
 
-  <div class="card">
-    <div class="img-wrap">
-      <img src="https://picsum.photos/400/300?3">
-    </div>
-    <h3>Товар 3</h3>
-    <div class="price">1999 ₴</div>
-    <a href="#" class="btn">Купить</a>
-  </div>
 </section>
 
-<footer>
-  © 2025 Hop Shop
-</footer>
-
 <script>
-  /* ===== Snow ===== */
-  const canvas = document.getElementById("snow");
-  const ctx = canvas.getContext("2d");
+/* СНЕГ */
+const c=document.getElementById("snow"),x=c.getContext("2d");
+function r(){c.width=innerWidth;c.height=innerHeight}
+r();addEventListener("resize",r);
 
-  let w, h;
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
-  window.addEventListener("resize", resize);
-  resize();
+const s=[...Array(120)].map(()=>({
+  x:Math.random()*c.width,
+  y:Math.random()*c.height,
+  r:Math.random()*3+1,
+  v:Math.random()*0.4+0.2
+}));
 
-  const snowflakes = Array.from({ length: 120 }, () => ({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    r: Math.random() * 3 + 1,
-    s: Math.random() * 0.4 + 0.2
-  }));
-
-  function drawSnow() {
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = "white";
-
-    snowflakes.forEach(f => {
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-      ctx.fill();
-      f.y += f.s;
-      if (f.y > h) {
-        f.y = -5;
-        f.x = Math.random() * w;
-      }
-    });
-
-    requestAnimationFrame(drawSnow);
-  }
-  drawSnow();
-
-  /* ===== Parallax ===== */
-  const cards = document.querySelectorAll(".card");
-  const header = document.getElementById("header");
-
-  document.addEventListener("mousemove", e => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 20;
-    const y = (e.clientY / window.innerHeight - 0.5) * 20;
-
-    header.style.transform = `translate(${x}px, ${y}px)`;
-
-    cards.forEach((card, i) => {
-      card.style.transform = `translate(${x * (i+1) / 4}px, ${y * (i+1) / 4}px)`;
-    });
+(function a(){
+  x.clearRect(0,0,c.width,c.height);
+  x.fillStyle="white";
+  s.forEach(f=>{
+    x.beginPath();
+    x.arc(f.x,f.y,f.r,0,Math.PI*2);
+    x.fill();
+    f.y+=f.v;
+    if(f.y>c.height){
+      f.y=-5;
+      f.x=Math.random()*c.width;
+    }
   });
+  requestAnimationFrame(a);
+})();
 </script>
 
 </body>
