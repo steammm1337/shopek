@@ -6,17 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --pink:#ff0080;
-  --blue:#00eaff;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+:root{--pink:#ff0080;--blue:#00eaff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 
 body{
   background:black;
@@ -24,53 +15,27 @@ body{
   opacity:0;
   transition:opacity .6s ease;
 }
-
-body.show{
-  opacity:1;
-}
+body.show{opacity:1}
 
 .container{
   max-width:900px;
-  margin:60px auto;
-  padding:20px;
+  margin:50px auto;
   text-align:center;
+  padding:20px;
 }
 
-img{
-  width:100%;
-  border-radius:24px;
-  margin-bottom:25px;
-}
+img{width:100%;border-radius:24px;margin-bottom:20px}
+.price{color:var(--pink);font-size:24px;margin:20px 0}
 
-h1{
-  color:var(--blue);
-  margin-bottom:10px;
-}
-
-.desc{
-  opacity:.85;
-  margin-bottom:20px;
-}
-
-.price{
-  font-size:26px;
-  color:var(--pink);
-  margin-bottom:30px;
-}
-
-/* RADUGA BUTTON */
 .btn{
   position:relative;
-  display:inline-block;
-  padding:16px 50px;
-  color:white;
-  text-decoration:none;
+  padding:16px 44px;
   border-radius:50px;
   background:#111;
-  z-index:1;
-  font-size:18px;
+  color:white;
+  border:none;
+  cursor:pointer;
 }
-
 .btn::before{
   content:"";
   position:absolute;
@@ -78,74 +43,48 @@ h1{
   border-radius:50px;
   background-size:300% 300%;
   background-image:linear-gradient(
-    90deg,
-    #ff004c,
-    #ffa600,
-    #ffee00,
-    #00ff9d,
-    #00c3ff,
-    #8f00ff,
-    #ff004c
+    90deg,#ff004c,#ffa600,#ffee00,#00ff9d,#00c3ff,#8f00ff,#ff004c
   );
   animation:borderMove 3s linear infinite;
-  z-index:-2;
-}
-
-.btn::after{
-  content:"";
-  position:absolute;
-  inset:3px;
-  border-radius:50px;
-  background:#111;
   z-index:-1;
 }
+@keyframes borderMove{to{background-position:300%}}
 
-@keyframes borderMove{
-  from{background-position:0%}
-  to{background-position:300%}
-}
+.back{cursor:pointer;opacity:.7;margin-bottom:20px}
+.back:hover{opacity:1}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+  <div class="back" onclick="back()">← Назад</div>
   <img id="img">
-  <h1 id="title"></h1>
-  <p class="desc" id="desc"></p>
+  <h2 id="title"></h2>
+  <p id="desc"></p>
   <div class="price" id="price"></div>
-
-  <a class="btn" href="contact.html" onclick="go(event)">Купить</a>
+  <button class="btn" onclick="buy()">Купить</button>
 </div>
 
 <script>
-/* FADE IN */
-window.addEventListener("load",()=>{
-  document.body.classList.add("show");
-});
+window.addEventListener("load",()=>document.body.classList.add("show"));
 
-/* FADE OUT */
-function go(e){
-  e.preventDefault();
-  const url = e.target.href;
+const id=new URLSearchParams(location.search).get("id")||1;
+
+img.src=`https://picsum.photos/900/500?random=${id}`;
+title.innerText=`Товар ${id}`;
+desc.innerText=`Полное описание товара ${id}. Все характеристики и детали.`;
+price.innerText=`${700+id*40} ₴`;
+
+function back(){
   document.body.classList.remove("show");
-  setTimeout(()=>location.href=url,500);
+  setTimeout(()=>location.href="index.html",600);
 }
 
-/* DATA */
-const id = new URLSearchParams(location.search).get("id") || 1;
-
-document.getElementById("img").src =
-  `https://picsum.photos/900/500?random=${id}`;
-
-document.getElementById("title").innerText =
-  `Товар ${id}`;
-
-document.getElementById("desc").innerText =
-  `Полное описание товара ${id}. Здесь характеристики, детали, преимущества и вся информация для покупки.`;
-
-document.getElementById("price").innerText =
-  `${700 + id * 40} ₴`;
+function buy(){
+  document.body.classList.remove("show");
+  setTimeout(()=>location.href="contact.html",600);
+}
 </script>
 
 </body>
