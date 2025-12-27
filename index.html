@@ -68,7 +68,9 @@ header{
 }
 
 .content{text-align:center;padding:20px}
-.price{color:var(--pink);font-size:20px;margin:10px 0}
+.content h3{color:var(--blue);margin-bottom:6px}
+.desc{opacity:.8;margin-bottom:10px}
+.price{color:var(--pink);font-size:20px;margin-bottom:14px}
 
 /* 🌈 КНОПКА С РАДУЖНОЙ ОБВОДКОЙ */
 .btn{
@@ -88,14 +90,12 @@ header{
   inset:-3px;
   border-radius:50px;
   background:linear-gradient(
-    90deg,
-    #ff004c,#ffa600,#ffee00,#00ff9d,#00c3ff,#8f00ff,#ff004c
+    90deg,#ff004c,#ffa600,#ffee00,#00ff9d,#00c3ff,#8f00ff,#ff004c
   );
   background-size:300% 300%;
   animation:borderMove 3s linear infinite;
   z-index:-1;
 }
-
 .btn::after{
   content:"";
   position:absolute;
@@ -105,12 +105,10 @@ header{
   z-index:-1;
 }
 
-@keyframes borderMove{
-  to{background-position:300%}
-}
+@keyframes borderMove{to{background-position:300%}}
 
-/* 📱 MOBILE SWIPE */
-@media (max-width:768px){
+/* 📱 МОБИЛЬНЫЙ СВАЙП */
+@media(max-width:768px){
   .shop{
     display:flex;
     overflow-x:auto;
@@ -146,6 +144,7 @@ for(let i=1;i<=10;i++){
     </div>
     <div class="content">
       <h3>Товар ${i}</h3>
+      <p class="desc">Описание товара ${i}</p>
       <div class="price">${700+i*40} ₴</div>
       <button class="btn" onclick="location.href='product.html?id=${i}'">
         Просмотреть
