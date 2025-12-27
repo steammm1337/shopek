@@ -13,9 +13,12 @@ body{
   background:black;
   color:white;
   overflow-x:hidden;
+  opacity:0;
+  transition:opacity .4s ease;
 }
+body.show{opacity:1}
+body.hide{opacity:0}
 
-/* ❄️ СНЕГ */
 canvas{
   position:fixed;
   inset:0;
@@ -23,7 +26,6 @@ canvas{
   pointer-events:none;
 }
 
-/* HEADER */
 header{
   position:relative;
   z-index:1;
@@ -38,7 +40,6 @@ header{
   text-shadow:0 0 35px var(--pink);
 }
 
-/* SHOP */
 .shop{
   position:relative;
   z-index:1;
@@ -48,7 +49,6 @@ header{
   padding:40px;
 }
 
-/* CARD */
 .card{
   background:#111;
   border-radius:24px;
@@ -61,18 +61,13 @@ header{
 }
 
 .image-box{aspect-ratio:4/3}
-.image-box img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+.image-box img{width:100%;height:100%;object-fit:cover}
 
 .content{text-align:center;padding:20px}
-.content h3{color:var(--blue);margin-bottom:6px}
-.desc{opacity:.8;margin-bottom:10px}
-.price{color:var(--pink);font-size:20px;margin-bottom:14px}
+.content h3{color:var(--blue)}
+.desc{opacity:.8}
+.price{color:var(--pink);font-size:20px;margin:10px 0}
 
-/* 🌈 КНОПКА С РАДУЖНОЙ ОБВОДКОЙ */
 .btn{
   position:relative;
   padding:14px 36px;
@@ -81,7 +76,6 @@ header{
   border:none;
   border-radius:50px;
   cursor:pointer;
-  z-index:1;
 }
 
 .btn::before{
@@ -107,7 +101,6 @@ header{
 
 @keyframes borderMove{to{background-position:300%}}
 
-/* 📱 МОБИЛЬНЫЙ СВАЙП */
 @media(max-width:768px){
   .shop{
     display:flex;
@@ -134,8 +127,15 @@ header{
 <section class="shop" id="shop"></section>
 
 <script>
-const shop=document.getElementById("shop");
+document.body.classList.add("show");
 
+function go(url){
+  document.body.classList.remove("show");
+  document.body.classList.add("hide");
+  setTimeout(()=>location.href=url,350);
+}
+
+const shop=document.getElementById("shop");
 for(let i=1;i<=10;i++){
   shop.innerHTML+=`
   <div class="card">
@@ -146,25 +146,23 @@ for(let i=1;i<=10;i++){
       <h3>Товар ${i}</h3>
       <p class="desc">Описание товара ${i}</p>
       <div class="price">${700+i*40} ₴</div>
-      <button class="btn" onclick="location.href='product.html?id=${i}'">
+      <button class="btn" onclick="go('product.html?id=${i}')">
         Просмотреть
       </button>
     </div>
   </div>`;
 }
 
-/* ❄️ СНЕГ */
+/* ❄️ снег */
 const c=document.getElementById("snow"),x=c.getContext("2d");
 function r(){c.width=innerWidth;c.height=innerHeight}
 r();addEventListener("resize",r);
-
 const s=[...Array(120)].map(()=>({
   x:Math.random()*c.width,
   y:Math.random()*c.height,
   r:Math.random()*3+1,
   v:Math.random()*.4+.2
 }));
-
 (function a(){
   x.clearRect(0,0,c.width,c.height);
   x.fillStyle="white";
@@ -173,10 +171,7 @@ const s=[...Array(120)].map(()=>({
     x.arc(f.x,f.y,f.r,0,Math.PI*2);
     x.fill();
     f.y+=f.v;
-    if(f.y>c.height){
-      f.y=-5;
-      f.x=Math.random()*c.width;
-    }
+    if(f.y>c.height){f.y=-5;f.x=Math.random()*c.width}
   });
   requestAnimationFrame(a);
 })();
