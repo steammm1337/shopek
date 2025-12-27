@@ -6,8 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* === CSS — ВНЕШНИЙ ВИД САЙТА === */
-
 :root {
   --pink:#ff0080;
   --blue:#00eaff;
@@ -111,33 +109,46 @@ header h1 {
 .price {
   color:var(--pink);
   font-size:18px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
-/* КНОПКА */
+/* КНОПКА С ПЕРЕЛИВАЮЩЕЙСЯ ОБВОДКОЙ */
 .btn {
+  position:relative;
   display:inline-block;
-  padding:12px 26px;
-  border-radius:40px;
-  background:#111;
+  padding:12px 30px;
   color:white;
   text-decoration:none;
-  position:relative;
-  overflow:hidden;
+  border-radius:40px;
+  background:#111;
+  z-index:1;
 }
 
 .btn::before {
   content:"";
   position:absolute;
-  inset:-4px;
-  background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
-  filter:blur(12px);
-  opacity:0;
-  transition:.4s;
+  inset:-2px;
+  border-radius:40px;
+  background:linear-gradient(
+    90deg,
+    red, orange, yellow, lime, cyan, blue, violet, red
+  );
+  z-index:-1;
+  animation:borderFlow 3s linear infinite;
 }
 
-.btn:hover::before {
-  opacity:1;
+.btn::after {
+  content:"";
+  position:absolute;
+  inset:2px;
+  border-radius:40px;
+  background:#111;
+  z-index:-1;
+}
+
+@keyframes borderFlow {
+  from {background-position:0%;}
+  to   {background-position:200%;}
 }
 
 /* МОБИЛЬНЫЙ СКРОЛЛ */
@@ -147,11 +158,7 @@ header h1 {
     overflow-x:auto;
     scroll-snap-type:x mandatory;
   }
-
-  .shop::-webkit-scrollbar {
-    display:none;
-  }
-
+  .shop::-webkit-scrollbar {display:none;}
   .card {
     min-width:90%;
     scroll-snap-align:center;
@@ -171,29 +178,25 @@ header h1 {
 
 <section class="shop">
 
+<!-- ===== 20 ТОВАРОВ ===== -->
+<script>
+const shop = document.currentScript.parentElement;
+for(let i=1;i<=20;i++){
+  shop.innerHTML += `
   <div class="card">
     <div class="image-box">
-      <img src="images/product1.jpg">
+      <img src="https://picsum.photos/400/300?random=${i}">
     </div>
     <div class="content">
-      <h3>Товар 1</h3>
-      <p class="desc">Описание товара</p>
-      <div class="price">999 ₴</div>
+      <h3>Товар ${i}</h3>
+      <p class="desc">Описание товара номер ${i}</p>
+      <div class="price">${500 + i*50} ₴</div>
       <a class="btn" href="#">Купить</a>
     </div>
   </div>
-
-  <div class="card">
-    <div class="image-box">
-      <img src="images/product2.jpg">
-    </div>
-    <div class="content">
-      <h3>Товар 2</h3>
-      <p class="desc">Ещё описание</p>
-      <div class="price">1499 ₴</div>
-      <a class="btn" href="#">Купить</a>
-    </div>
-  </div>
+  `;
+}
+</script>
 
 </section>
 
