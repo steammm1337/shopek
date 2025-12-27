@@ -6,42 +6,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root{
+  --pink:#ff0080;
+  --blue:#00eaff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
 body{
   background:black;
   color:white;
-  font-family:Arial;
-  padding:40px;
+  opacity:0;
+  transition:opacity .6s ease;
+}
+
+body.show{
+  opacity:1;
 }
 
 .container{
   max-width:900px;
-  margin:auto;
+  margin:60px auto;
+  padding:20px;
+  text-align:center;
 }
 
 img{
   width:100%;
-  border-radius:20px;
-  margin-bottom:20px;
+  border-radius:24px;
+  margin-bottom:25px;
 }
 
 h1{
-  color:#00eaff;
+  color:var(--blue);
+  margin-bottom:10px;
+}
+
+.desc{
+  opacity:.85;
+  margin-bottom:20px;
 }
 
 .price{
-  font-size:24px;
-  color:#ff0080;
-  margin:20px 0;
+  font-size:26px;
+  color:var(--pink);
+  margin-bottom:30px;
 }
 
+/* RADUGA BUTTON */
 .btn{
+  position:relative;
   display:inline-block;
-  padding:14px 40px;
+  padding:16px 50px;
   color:white;
   text-decoration:none;
   border-radius:50px;
   background:#111;
-  position:relative;
+  z-index:1;
+  font-size:18px;
 }
 
 .btn::before{
@@ -49,8 +76,33 @@ h1{
   position:absolute;
   inset:-3px;
   border-radius:50px;
-  background:linear-gradient(90deg,#ff004c,#00eaff,#8f00ff);
+  background-size:300% 300%;
+  background-image:linear-gradient(
+    90deg,
+    #ff004c,
+    #ffa600,
+    #ffee00,
+    #00ff9d,
+    #00c3ff,
+    #8f00ff,
+    #ff004c
+  );
+  animation:borderMove 3s linear infinite;
+  z-index:-2;
+}
+
+.btn::after{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:50px;
+  background:#111;
   z-index:-1;
+}
+
+@keyframes borderMove{
+  from{background-position:0%}
+  to{background-position:300%}
 }
 </style>
 </head>
@@ -60,13 +112,27 @@ h1{
 <div class="container">
   <img id="img">
   <h1 id="title"></h1>
-  <p id="desc"></p>
+  <p class="desc" id="desc"></p>
   <div class="price" id="price"></div>
 
-  <a class="btn" href="contact.html">Купить</a>
+  <a class="btn" href="contact.html" onclick="go(event)">Купить</a>
 </div>
 
 <script>
+/* FADE IN */
+window.addEventListener("load",()=>{
+  document.body.classList.add("show");
+});
+
+/* FADE OUT */
+function go(e){
+  e.preventDefault();
+  const url = e.target.href;
+  document.body.classList.remove("show");
+  setTimeout(()=>location.href=url,500);
+}
+
+/* DATA */
 const id = new URLSearchParams(location.search).get("id") || 1;
 
 document.getElementById("img").src =
@@ -76,7 +142,7 @@ document.getElementById("title").innerText =
   `Товар ${id}`;
 
 document.getElementById("desc").innerText =
-  `Полное описание товара ${id}. Здесь характеристики, детали, преимущества, всё что нужно покупателю.`;
+  `Полное описание товара ${id}. Здесь характеристики, детали, преимущества и вся информация для покупки.`;
 
 document.getElementById("price").innerText =
   `${700 + id * 40} ₴`;
