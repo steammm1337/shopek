@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+мой магазин товаров после того как я ажимаю купиьь,а потом нажимаю на вернуться на сайт,он не загружает тоывары <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -11,24 +11,36 @@
   --blue:#00eaff;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:black;color:white;overflow-x:hidden}
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
 
-canvas{
+body {
+  background:black;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* СНЕГ */
+canvas {
   position:fixed;
   inset:0;
   z-index:0;
   pointer-events:none;
 }
 
-header{
+/* HEADER */
+header {
   text-align:center;
   padding:40px 20px;
   position:relative;
   z-index:1;
 }
 
-header h1{
+header h1 {
   font-size:3rem;
   background:linear-gradient(90deg,var(--pink),var(--blue));
   -webkit-background-clip:text;
@@ -36,48 +48,129 @@ header h1{
   text-shadow:0 0 35px var(--pink);
 }
 
-.shop{
+/* SHOP */
+.shop {
   position:relative;
   z-index:1;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:50px;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); /* БОЛЬШЕ */
+  gap:50px; /* ДАЛЬШЕ ДРУГ ОТ ДРУГА */
   padding:40px;
 }
 
-.card{
+/* CARD */
+.card {
   background:linear-gradient(135deg,#111,#222);
   border-radius:24px;
   overflow:hidden;
   transition:.3s;
 }
 
-.card:hover{
+.card:hover {
   transform:translateY(-12px);
   box-shadow:0 0 45px var(--blue);
 }
 
-.image-box{aspect-ratio:4/3;overflow:hidden}
-.image-box img{width:100%;height:100%;object-fit:cover}
+/* IMAGE */
+.image-box {
+  aspect-ratio:4/3;
+  overflow:hidden;
+}
 
-.content{text-align:center;padding:20px}
-.content h3{color:var(--blue)}
-.desc{opacity:.8;margin:10px 0}
-.price{color:var(--pink);font-size:20px;margin-bottom:14px}
+.image-box img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.4s;
+}
 
-.btn{
+.card:hover img {
+  transform:scale(1.08);
+}
+
+/* CONTENT */
+.content {
+  padding:20px;
+  text-align:center;
+}
+
+.content h3 {
+  color:var(--blue);
+  margin-bottom:8px;
+  font-size:20px;
+}
+
+.desc {
+  opacity:.8;
+  margin-bottom:10px;
+}
+
+.price {
+  color:var(--pink);
+  font-size:20px;
+  margin-bottom:14px;
+}
+
+/* КНОПКА С ПЕРЕЛИВАЮЩЕЙСЯ ОБВОДКОЙ */
+.btn {
+  position:relative;
   display:inline-block;
   padding:14px 34px;
   color:white;
   text-decoration:none;
   border-radius:50px;
   background:#111;
-  border:2px solid var(--pink);
+  z-index:1;
 }
 
-@media(max-width:768px){
-  .shop{display:flex;overflow-x:auto;gap:20px}
-  .card{min-width:90%}
+.btn::before {
+  content:"";
+  position:absolute;
+  inset:-3px;
+  border-radius:50px;
+  background-size:300% 300%;
+  background-image:linear-gradient(
+    90deg,
+    #ff004c,
+    #ffa600,
+    #ffee00,
+    #00ff9d,
+    #00c3ff,
+    #8f00ff,
+    #ff004c
+  );
+  animation:borderMove 3s linear infinite;
+  z-index:-2;
+}
+
+.btn::after {
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:50px;
+  background:#111;
+  z-index:-1;
+}
+
+@keyframes borderMove {
+  from {background-position:0%;}
+  to   {background-position:300%;}
+}
+
+/* MOBILE — НЕ МЕНЯЕМ */
+@media (max-width:768px) {
+  .shop {
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:20px;
+    padding:20px;
+  }
+  .shop::-webkit-scrollbar {display:none;}
+  .card {
+    min-width:90%;
+    scroll-snap-align:center;
+  }
 }
 </style>
 </head>
@@ -92,43 +185,23 @@ header h1{
 </header>
 
 <section class="shop">
-
-  <div class="card">
-    <div class="image-box">
-      <img src="https://picsum.photos/500/350?random=1">
-    </div>
-    <div class="content">
-      <h3>Товар 1</h3>
-      <p class="desc">Описание товара 1</p>
-      <div class="price">740 ₴</div>
-      <a class="btn" href="contact.html">Купить</a>
-    </div>
+<script>
+const shop=document.currentScript.parentElement;
+for(let i=1;i<=20;i++){
+shop.innerHTML+=`
+<div class="card">
+  <div class="image-box">
+    <img src="https://picsum.photos/500/350?random=${i}">
   </div>
-
-  <div class="card">
-    <div class="image-box">
-      <img src="https://picsum.photos/500/350?random=2">
-    </div>
-    <div class="content">
-      <h3>Товар 2</h3>
-      <p class="desc">Описание товара 2</p>
-      <div class="price">780 ₴</div>
-      <a class="btn" href="contact.html">Купить</a>
-    </div>
+  <div class="content">
+    <h3>Товар ${i}</h3>
+    <p class="desc">Описание товара ${i}</p>
+    <div class="price">${700+i*40} ₴</div>
+    <a class="btn" href="contact.html">Купить</a>
   </div>
-
-  <div class="card">
-    <div class="image-box">
-      <img src="https://picsum.photos/500/350?random=3">
-    </div>
-    <div class="content">
-      <h3>Товар 3</h3>
-      <p class="desc">Описание товара 3</p>
-      <div class="price">820 ₴</div>
-      <a class="btn" href="contact.html">Купить</a>
-    </div>
-  </div>
-
+</div>`;
+}
+</script>
 </section>
 
 <script>
@@ -137,15 +210,15 @@ function r(){c.width=innerWidth;c.height=innerHeight}
 r();addEventListener("resize",r);
 const s=[...Array(120)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1,v:Math.random()*.4+.2}));
 (function a(){
-  x.clearRect(0,0,c.width,c.height);
-  x.fillStyle="white";
-  s.forEach(f=>{
-    x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
-    f.y+=f.v;if(f.y>c.height){f.y=-5;f.x=Math.random()*c.width;}
-  });
-  requestAnimationFrame(a);
+x.clearRect(0,0,c.width,c.height);
+x.fillStyle="white";
+s.forEach(f=>{
+x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
+f.y+=f.v;if(f.y>c.height){f.y=-5;f.x=Math.random()*c.width;}
+});
+requestAnimationFrame(a);
 })();
 </script>
 
 </body>
-</html>
+</html> сделай тут что бы я мог поменять изображение название товара описание и тд
