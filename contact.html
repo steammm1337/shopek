@@ -6,37 +6,117 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
+* {
   margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body {
   background:black;
   color:white;
-  font-family:Arial,sans-serif;
+  height:100vh;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  height:100vh;
-  overflow:hidden;
 }
 
+/* СНЕГ */
 canvas {
   position:fixed;
   inset:0;
+  z-index:0;
+  pointer-events:none;
 }
 
 .box {
   position:relative;
   z-index:1;
   text-align:center;
+  padding:40px;
+  background:rgba(0,0,0,.6);
+  border-radius:25px;
+  box-shadow:0 0 40px #00eaff;
 }
 
-.box img {
-  width:120px;
-  margin-bottom:20px;
-}
-
-.box h1 {
+.box h2 {
+  margin-bottom:25px;
+  font-size:24px;
   color:#00eaff;
-  text-shadow:0 0 25px #00eaff;
+  text-shadow:0 0 20px #00eaff;
+}
+
+/* TELEGRAM */
+.tg-link {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+  text-decoration:none;
+  color:white;
+}
+
+.tg-link img {
+  width:110px;
+  transition:.3s;
+}
+
+.tg-link:hover img {
+  transform:scale(1.1);
+}
+
+.tg-link span {
+  font-size:22px;
+  color:#00eaff;
+  text-shadow:0 0 20px #00eaff;
+}
+
+/* КНОПКА НАЗАД */
+.back {
+  display:inline-block;
+  margin-top:30px;
+  padding:12px 30px;
+  border-radius:40px;
+  background:#111;
+  color:white;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+}
+
+.back::before {
+  content:"";
+  position:absolute;
+  inset:-3px;
+  background-size:300% 300%;
+  background-image:linear-gradient(
+    90deg,
+    #ff004c,
+    #ffa600,
+    #ffee00,
+    #00ff9d,
+    #00c3ff,
+    #8f00ff,
+    #ff004c
+  );
+  animation:borderMove 3s linear infinite;
+  z-index:-2;
+}
+
+.back::after {
+  content:"";
+  position:absolute;
+  inset:3px;
+  background:#111;
+  border-radius:40px;
+  z-index:-1;
+}
+
+@keyframes borderMove {
+  from {background-position:0%;}
+  to   {background-position:300%;}
 }
 </style>
 </head>
@@ -46,23 +126,42 @@ canvas {
 <canvas id="snow"></canvas>
 
 <div class="box">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
-  <h1>@looksn1ce</h1>
+  <h2>Для покупки, свяжитесь со мной</h2>
+
+  <a class="tg-link" href="https://t.me/looksn1ce" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
+    <span>@looksn1ce</span>
+  </a>
+
+  <a class="back" href="index.html">← Вернуться в магазин</a>
 </div>
 
 <script>
 const c=document.getElementById("snow"),x=c.getContext("2d");
 function r(){c.width=innerWidth;c.height=innerHeight}
 r();addEventListener("resize",r);
-const s=[...Array(120)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1,v:Math.random()*.4+.2}));
+
+const s=[...Array(120)].map(()=>({
+  x:Math.random()*c.width,
+  y:Math.random()*c.height,
+  r:Math.random()*3+1,
+  v:Math.random()*.4+.2
+}));
+
 (function a(){
-x.clearRect(0,0,c.width,c.height);
-x.fillStyle="white";
-s.forEach(f=>{
-x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
-f.y+=f.v;if(f.y>c.height){f.y=-5;f.x=Math.random()*c.width;}
-});
-requestAnimationFrame(a);
+  x.clearRect(0,0,c.width,c.height);
+  x.fillStyle="white";
+  s.forEach(f=>{
+    x.beginPath();
+    x.arc(f.x,f.r?f.y:f.y,f.r,0,Math.PI*2);
+    x.fill();
+    f.y+=f.v;
+    if(f.y>c.height){
+      f.y=-5;
+      f.x=Math.random()*c.width;
+    }
+  });
+  requestAnimationFrame(a);
 })();
 </script>
 
